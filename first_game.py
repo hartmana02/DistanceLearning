@@ -31,6 +31,9 @@ font = pygame.font.Font("freesansbold.ttf", 25)
 while running:
     screen.fill((0, 0, 0))
 
+    text = font.render("Score: " + str(score), True, (255, 255, 255))
+    screen.blit(text, (350, 10))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -62,8 +65,5 @@ while running:
 
             enemy_y_list[i] += 8
             pygame.draw.circle(screen, (255, 255, 255), (enemy_x_list[i], enemy_y_list[i]), enemy_radius)
-
-        text = font.render("Score: " + str(score), True, (255, 255, 255))
-        screen.blit(text, (350, 10))
 
         pygame.display.update()
