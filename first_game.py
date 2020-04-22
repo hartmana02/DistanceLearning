@@ -14,9 +14,12 @@ player_height = 30
 player_image = pygame.image.load("game_images/heart.png")
 player_vel = 6
 
+enemy_color_list = [(255, 255, 255), (0, 255, 255)]
+enemy_color = enemy_color_list[0]
 enemy_x_list = []
 enemy_y_list = []
 enemy_radius = 20
+enemy_vel = 7
 num_of_enemies = 15
 for i in range(num_of_enemies):
     enemy_x_list.append(random.randint(0, 500))
@@ -33,12 +36,14 @@ score = 0
 font = pygame.font.Font("freesansbold.ttf", 25)
 
 def reset_game():
-    global collision, score, num_of_enemies, player_x, player_y
+    global collision, score, num_of_enemies, enemy_vel, enemy_color, player_x, player_y
     screen.fill((0, 0, 0))
     
     collision = False
     score = 0
 
+    enemy_color = enemy_color_list[0]
+    enemy_vel = 7
     enemy_x_list.clear()
     enemy_y_list.clear()
     for i in range(num_of_enemies):
@@ -65,6 +70,10 @@ while running:
             if reset_button.collidepoint(mouse_pos):
                 reset_game()
 
+    if score >= 50 and score < 100:
+        enemy_vel = 9
+        enemy_color = enemy_color_list[1]
+
     if not collision:
         keys = pygame.key.get_pressed()
 
@@ -90,8 +99,8 @@ while running:
             if distance < 38:
                 collision = True
 
-            enemy_y_list[i] += 8
-            pygame.draw.circle(screen, (255, 255, 255), (enemy_x_list[i], enemy_y_list[i]), enemy_radius)
+            enemy_y_list[i] += enemy_vel
+            pygame.draw.circle(screen, enemy_color, (enemy_x_list[i], enemy_y_list[i]), enemy_radius)
 
     else:
         pygame.draw.rect(screen, [200, 0, 0], reset_button)
