@@ -23,20 +23,47 @@ for i in range(num_of_enemies):
 
     enemy_y_list.append(random.randint(-1000, -250))
 
+reset_button = pygame.Rect(190, 300, 125, 50)
+
+death_text = pygame.image.load("game_images/you_died.png")
+
 collision = False
 running = True
 score = 0
 font = pygame.font.Font("freesansbold.ttf", 25)
 
+def reset_game():
+    global collision, score, num_of_enemies, player_x, player_y
+    screen.fill((0, 0, 0))
+    
+    collision = False
+    score = 0
+
+    enemy_x_list.clear()
+    enemy_y_list.clear()
+    for i in range(num_of_enemies):
+        enemy_x_list.append(random.randint(0, 500))
+
+        enemy_y_list.append(random.randint(-1000, -250))
+
+    player_x = 225
+    player_y = 350
+
 while running:
     screen.fill((0, 0, 0))
 
-    text = font.render("Score: " + str(score), True, (255, 255, 255))
-    screen.blit(text, (350, 10))
+    display_score = font.render("Score: " + str(score), True, (255, 255, 255))
+    screen.blit(display_score, (350, 10))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = event.pos  
+
+            if reset_button.collidepoint(mouse_pos):
+                reset_game()
 
     if not collision:
         keys = pygame.key.get_pressed()
@@ -66,4 +93,12 @@ while running:
             enemy_y_list[i] += 8
             pygame.draw.circle(screen, (255, 255, 255), (enemy_x_list[i], enemy_y_list[i]), enemy_radius)
 
-        pygame.display.update()
+    else:
+        pygame.draw.rect(screen, [200, 0, 0], reset_button)
+        
+        screen.blit(death_text, (-15, -100))
+
+        replay_text = font.render("Replay", True, (0, 0, 0))
+        screen.blit(replay_text, (210, 315))
+        
+    pygame.display.update()
