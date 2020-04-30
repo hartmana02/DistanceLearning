@@ -71,7 +71,7 @@ while running:
                 reset_game()
 
     if score >= 50 and score < 100:
-        enemy_vel = 9
+        enemy_vel = 8
         enemy_color = enemy_color_list[1]
 
     if not collision:
@@ -96,7 +96,7 @@ while running:
 
             #hit detection uses the distance formula
             distance = math.sqrt((math.pow(enemy_x_list[i] - (player_x+15), 2)) + (math.pow(enemy_y_list[i] - (player_y+15), 2))) 
-            if distance < 38:
+            if distance < 40:
                 collision = True
 
             enemy_y_list[i] += enemy_vel
