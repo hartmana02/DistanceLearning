@@ -33,7 +33,8 @@ death_text = pygame.image.load("game_images/you_died.png")
 collision = False
 running = True
 score = 0
-font = pygame.font.Font("freesansbold.ttf", 25)
+high_score = 0
+font = pygame.font.Font("freesansbold.ttf", 20)
 
 def reset_game():
     global collision, score, num_of_enemies, enemy_vel, enemy_color, player_x, player_y
@@ -58,7 +59,10 @@ while running:
     screen.fill((0, 0, 0))
 
     display_score = font.render("Score: " + str(score), True, (255, 255, 255))
-    screen.blit(display_score, (350, 10))
+    screen.blit(display_score, (360, 10))
+
+    display_high_score = font.render("High Score: " + str(high_score), True, (255, 255, 255))
+    screen.blit(display_high_score, (180, 10))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -93,6 +97,8 @@ while running:
                 enemy_y_list[i] = random.randint(-500, 0)
                 enemy_x_list[i] = random.randint(0, 500)
                 score += 1
+                if score > high_score:
+                    high_score += 1
 
             #hit detection uses the distance formula
             distance = math.sqrt((math.pow(enemy_x_list[i] - (player_x+15), 2)) + (math.pow(enemy_y_list[i] - (player_y+15), 2))) 
@@ -108,6 +114,6 @@ while running:
         screen.blit(death_text, (-15, -100))
 
         replay_text = font.render("Replay", True, (0, 0, 0))
-        screen.blit(replay_text, (210, 315))
+        screen.blit(replay_text, (220, 315))
         
     pygame.display.update()
