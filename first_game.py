@@ -1,4 +1,4 @@
-import pygame, random, math
+import pygame, tkinter, random, math
 
 pygame.init()
 
@@ -56,6 +56,8 @@ def reset_game():
     player_y = 350
 
 while running:
+    enemy_color_list = [(255, 255, 255), (0, 255, 255), (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))]
+    
     screen.fill((0, 0, 0))
 
     display_score = font.render("Score: " + str(score), True, (255, 255, 255))
@@ -74,9 +76,13 @@ while running:
             if reset_button.collidepoint(mouse_pos):
                 reset_game()
 
-    if score >= 50 and score < 100:
+    if score >= 25 and score < 50:
         enemy_vel = 8
         enemy_color = enemy_color_list[1]
+
+    elif score >= 50:
+        enemy_vel = 9
+        enemy_color = enemy_color_list[2]
 
     if not collision:
         keys = pygame.key.get_pressed()
