@@ -76,11 +76,11 @@ while running:
             if reset_button.collidepoint(mouse_pos):
                 reset_game()
 
-    if score >= 25 and score < 50:
+    if score >= 50 and score < 100:
         enemy_vel = 8
         enemy_color = enemy_color_list[1]
 
-    elif score >= 50:
+    elif score >= 100:
         enemy_vel = 9
         enemy_color = enemy_color_list[2]
 
