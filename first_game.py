@@ -16,6 +16,7 @@ player_vel = 6
 
 enemy_color_list = [(255, 255, 255), (0, 255, 255)]
 enemy_color = enemy_color_list[0]
+direction = "down"
 enemy_x_list = []
 enemy_y_list = []
 enemy_radius = 20
@@ -37,7 +38,7 @@ high_score = 0
 font = pygame.font.Font("freesansbold.ttf", 20)
 
 def reset_game():
-    global collision, score, num_of_enemies, enemy_vel, enemy_color, player_x, player_y
+    global collision, score, num_of_enemies, enemy_vel, enemy_color, direction, player_x, player_y
     screen.fill((0, 0, 0))
     
     collision = False
@@ -45,6 +46,7 @@ def reset_game():
 
     enemy_color = enemy_color_list[0]
     enemy_vel = 7
+    direction = "down"
     enemy_x_list.clear()
     enemy_y_list.clear()
     for i in range(num_of_enemies):
@@ -56,7 +58,7 @@ def reset_game():
     player_y = 350
 
 while running:
-    enemy_color_list = [(255, 255, 255), (0, 255, 255), (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))]
+    enemy_color_list = [(255, 255, 255), (255, 0, 255), (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)), (0, 0, 255), (255, 0, 0)]
     
     screen.fill((0, 0, 0))
 
@@ -76,13 +78,51 @@ while running:
             if reset_button.collidepoint(mouse_pos):
                 reset_game()
 
-    if score >= 50 and score < 100:
+    if score >= 25 and score < 50:
+        if enemy_vel == 7:
+            enemy_x_list.clear()
+            enemy_y_list.clear()
+            for i in range(num_of_enemies):
+                enemy_x_list.append(random.randint(0, 500))
+
+                enemy_y_list.append(random.randint(-1000, -250))
         enemy_vel = 8
         enemy_color = enemy_color_list[1]
 
-    elif score >= 100:
+    elif score >= 50 and score < 100:
+        if enemy_vel == 8:
+            enemy_x_list.clear()
+            enemy_y_list.clear()
+            for i in range(num_of_enemies):
+                enemy_x_list.append(random.randint(0, 500))
+
+                enemy_y_list.append(random.randint(-1000, -250))
         enemy_vel = 9
         enemy_color = enemy_color_list[2]
+
+    elif score >= 100 and score < 200: 
+        if enemy_vel == 9:
+            enemy_x_list.clear()
+            enemy_y_list.clear()
+            for i in range(num_of_enemies):
+                enemy_x_list.append(random.randint(-1000, -250))
+
+                enemy_y_list.append(random.randint(0, 500))
+        enemy_vel = 8
+        enemy_color = enemy_color_list[3]
+        direction = "right"
+
+    elif score >= 200: 
+        if enemy_vel == 8:
+            enemy_x_list.clear()
+            enemy_y_list.clear()
+            for i in range(num_of_enemies):
+                enemy_x_list.append(random.randint(-1000, -250))
+
+                enemy_y_list.append(random.randint(0, 500))
+        enemy_vel = 10
+        enemy_color = enemy_color_list[4]
+        direction = "down"
 
     if not collision:
         keys = pygame.key.get_pressed()
@@ -99,19 +139,30 @@ while running:
         screen.blit(player_image, (player_x, player_y))
 
         for i in range(num_of_enemies):
-            if enemy_y_list[i] > 500: 
-                enemy_y_list[i] = random.randint(-500, 0)
-                enemy_x_list[i] = random.randint(0, 500)
-                score += 1
-                if score > high_score:
-                    high_score += 1
+            if direction == "down":
+                if enemy_y_list[i] > 500: 
+                    enemy_y_list[i] = random.randint(-500, 0)
+                    enemy_x_list[i] = random.randint(0, 500)
+                    score += 1
+                    if score > high_score:
+                        high_score += 1
+            else:
+                if enemy_x_list[i] > 500: 
+                    enemy_x_list[i] = random.randint(-500, 0)
+                    enemy_y_list[i] = random.randint(0, 500)
+                    score += 1
+                    if score > high_score:
+                        high_score += 1
 
             #hit detection uses the distance formula
             distance = math.sqrt((math.pow(enemy_x_list[i] - (player_x+15), 2)) + (math.pow(enemy_y_list[i] - (player_y+15), 2))) 
             if distance < 40:
                 collision = True
 
-            enemy_y_list[i] += enemy_vel
+            if direction == "down":
+                enemy_y_list[i] += enemy_vel
+            else:
+                enemy_x_list[i] += enemy_vel
             pygame.draw.circle(screen, enemy_color, (enemy_x_list[i], enemy_y_list[i]), enemy_radius)
 
     else:
