@@ -12,11 +12,9 @@ unique_countries = df["Country"].unique()
 
 for c in unique_countries:
     if c in countries: 
-        date = df[df["Country"] == c]["Date"]
-
         confirmed_cases = df[df["Country"] == c]["Confirmed"]
 
-        plt.plot(days, confirmed_cases, label=c, linestyle="-")
+        plt.plot(days, confirmed_cases, label=c, linestyle="dashed")
 
 plt.ylabel("Confirmed Cases (Logarithmic Scale)")
 plt.yscale("log")
