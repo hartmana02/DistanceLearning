@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-countries = ["US", "Spain", "Italy", "United Kingdom", "France", "Russia", "Iceland", "China", "India", "Korea, South"]
+display_countries = ["US", "Spain", "Italy", "United Kingdom", "France", "Russia", "Iceland", "China", "India", "Korea, South"]
 days = []
 for x in range(104):
     days.append(x)
@@ -11,7 +11,7 @@ df = pd.read_csv("covid19_data.csv", header=0)
 unique_countries = df["Country"].unique()
 
 for c in unique_countries:
-    if c in countries: 
+    if c in display_countries: 
         confirmed_cases = df[df["Country"] == c]["Confirmed"]
 
         plt.plot(days, confirmed_cases, label=c, linestyle="dashed")
