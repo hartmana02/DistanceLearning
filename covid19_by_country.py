@@ -3,7 +3,7 @@ import pandas as pd
 
 display_countries = ["US", "Spain", "Italy", "United Kingdom", "France", "Russia", "Iceland", "China", "India", "Korea, South"]
 days = []
-for x in range(104):
+for x in range(106):
     days.append(x)
 
 df = pd.read_csv("covid19_data.csv", header=0)
